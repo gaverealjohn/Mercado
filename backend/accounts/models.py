@@ -1,4 +1,4 @@
-from core.utils import unique_slugify
+from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
+from core.utils import unique_slugify
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -23,6 +24,8 @@ class UserManager(BaseUserManager):
 
         user.save(using=self._db)
 
+        # Create an instance of `Profile` after an instance of 
+        # `User` is created
         Profile.objects.create(user=user)
 
         return user
@@ -81,6 +84,9 @@ class Profile(models.Model):
         unique_slugify(self, slug_str)
         super(Profile, self).save(**kwargs)
 
+    def get_absolute_url(self):
+        return reverse('accounts:profile', kwargs={'pk': self.pk, 'slug': self.slug})
+    
     def __str__(self):
         return str(self.user)
 

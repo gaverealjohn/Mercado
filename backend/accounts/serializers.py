@@ -8,8 +8,17 @@ from store.models import (Product, ProductReview, Cart)
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['bio', 'image']
-        lookup_field = 'user'
+        fields = [
+            'id',
+            'user',
+            'slug',
+            'image',
+            'dob',
+            'gender',
+            'bio'
+        ]
+        read_only_fields = ['user']
+        depth = 1
 
 
 class UserAddressSerializer(serializers.ModelSerializer):
