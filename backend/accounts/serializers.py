@@ -42,11 +42,16 @@ class UserReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserReview
         fields = [
+            'id',
+            'author',
             'recipient',
             'rating',
             'title',
             'body',
+            'slug'
         ]
+        read_only_fields = ['author', 'recipient']
+        depth = 1
 
 
 class UserSerializer(serializers.ModelSerializer):
