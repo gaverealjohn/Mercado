@@ -25,12 +25,17 @@ class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
         fields = [
+            'id',
+            'user',
             'address_line1', 
             'address_line2', 
             'city',
+            'province',
             'postal_code',
             'country'
         ]
+        read_only_fields = ['user']
+        depth = 1
 
 
 class UserReviewSerializer(serializers.ModelSerializer):
