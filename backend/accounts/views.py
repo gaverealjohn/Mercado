@@ -1,5 +1,4 @@
-from rest_framework import serializers, views, viewsets
-from rest_framework.generics import get_object_or_404
+from rest_framework import viewsets
 
 from .models import (Profile, UserAddress, UserReview)
 from .serializers import (ProfileSerializer, UserAddressSerializer, UserReviewSerializer)
