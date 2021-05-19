@@ -2,9 +2,10 @@ from django.test import TestCase
 import re
 
 from .models import Profile, User
+from .serializers import UserSerializer
 
 
-class UserModelTest(TestCase):
+class UserProfileModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         user = User.objects.create(
@@ -45,7 +46,7 @@ class UserModelTest(TestCase):
         self.assertEqual(user.get_short_name(), expected_short_name)
     
     # Profile tests 
-    
+
     def test_profile_user_id(self):
         user = User.objects.get(id=1)
         profile = Profile.objects.get(user_id=1)
@@ -55,3 +56,40 @@ class UserModelTest(TestCase):
         user = User.objects.get(id=1)
         profile = Profile.objects.get(user_id=1)
         self.assertEqual(user.username, profile.slug)
+
+
+class UserSerializerTest(TestCase):
+    @classmethod
+    def setUpTestData(self):
+        self.user = User.objects.create(
+            phone_number='+639485712486',
+            first_name='John',
+            last_name='Doe',
+            username='johndoe',
+            email='',
+            password='This is john doe'
+        )
+        self.serializer = UserSerializer(instance=self.user)
+
+    def test_contains_expected_fields(self):
+        data = self.serializer.data
+        self.assertEqual(
+            set(data.keys()),
+            set([
+                'id',
+                'phone_number',
+                'first_name',
+                'last_name',
+                'username',
+                'email',
+                'is_active',
+                'is_staff',
+                'date_joined',
+                'last_updated',
+                'last_login',
+                'groups',
+                'is_superuser',
+                'password',
+                'user_permissions'
+            ])
+        )

@@ -5,18 +5,16 @@ from .models import (User, Profile, UserAddress, UserReview)
 from store.models import (Product, ProductReview, Cart)
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = [
-            'id',
-            'user',
-            'slug',
-            'image',
-            'dob',
-            'gender',
-            'bio'
-        ]
+        fields = '__all__'
         read_only_fields = ['user']
         depth = 1
 
@@ -24,16 +22,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = [
-            'id',
-            'user',
-            'address_line1', 
-            'address_line2', 
-            'city',
-            'province',
-            'postal_code',
-            'country'
-        ]
+        fields = '__all__'
         read_only_fields = ['user']
         depth = 1
 
@@ -41,27 +30,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 class UserReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserReview
-        fields = [
-            'id',
-            'author',
-            'recipient',
-            'rating',
-            'title',
-            'body',
-            'slug'
-        ]
+        fields =  '__all__'
         read_only_fields = ['author', 'recipient']
         depth = 1
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'id',
-            'phone_number',
-            'first_name',
-            'last_name',
-            'email',
-            'is_active'
-        ]
