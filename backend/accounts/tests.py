@@ -1,19 +1,22 @@
 from django.test import TestCase
 import re
 
-from .models import User
+from .models import Profile, User
 
 
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
-        User.objects.create(
+        user = User.objects.create(
             phone_number='+639485712486',
             first_name='John',
             last_name='Doe',
+            username='johndoe',
             email='',
             password='This is john doe'
         )
+        
+        Profile.objects.create(user=user)
 
     def test_phone_number_regex(self):
         user = User.objects.get(id=1)
@@ -36,4 +39,19 @@ class UserModelTest(TestCase):
         expected_full_name = f'{user.first_name} {user.last_name}'
         self.assertEqual(user.get_full_name(), expected_full_name)
 
+    def test_object_get_short_name(self):
+        user = User.objects.get(id=1)
+        expected_short_name = user.first_name
+        self.assertEqual(user.get_short_name(), expected_short_name)
     
+    # Profile tests 
+    
+    def test_profile_user_id(self):
+        user = User.objects.get(id=1)
+        profile = Profile.objects.get(user_id=1)
+        self.assertEqual(profile.user_id, user.id)
+
+    def test_profile_slug_is_user_username(self):
+        user = User.objects.get(id=1)
+        profile = Profile.objects.get(user_id=1)
+        self.assertEqual(user.username, profile.slug)

@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(validators=[RegexValidator(regex=r'^(09|\+639)\d{9}$')], max_length=50, unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
+    username = models.CharField(max_length=25, unique=True)
     email = models.CharField(max_length=50, unique=True, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -61,13 +62,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     class Meta:
         ordering = ['last_name']
 
     def get_full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
+
+    def get_short_name(self):
+        return self.first_name
 
 
 def profile_image_path(instance, filename):
@@ -83,7 +87,7 @@ class Profile(models.Model):
     bio = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, **kwargs):
-        slug_str = '%s %s' % (self.user.first_name, self.user.last_name)
+        slug_str = self.user.username
         unique_slugify(self, slug_str)
         super(Profile, self).save(**kwargs)
 
