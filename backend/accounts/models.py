@@ -66,6 +66,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ['last_name']
 
+    def get_full_name(self):
+        return '%s %s' % (self.first_name, self.last_name)
+
 
 def profile_image_path(instance, filename):
     return '/'.join(['profile-images/', str(instance.name), filename])
