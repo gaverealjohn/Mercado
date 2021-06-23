@@ -5,9 +5,6 @@ import { Redirect } from 'react-router'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 
-import NavigationBar from '../components/NavigationBar';
-import Footer from '../components/Footer';
-
 const SignupPhone = ({ error, isAuthenticated, ...props }) => {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [isPhoneValid, setIsPhoneValid] = useState(null)
